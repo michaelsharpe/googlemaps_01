@@ -1,5 +1,5 @@
 Googlemaps::Application.routes.draw do
-  root to: "maps#index"
+  get "/map" => "maps#index"
   resources :nodes
 
   # The priority is based upon order of creation: first created -> highest priority.
