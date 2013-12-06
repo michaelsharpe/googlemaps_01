@@ -3,6 +3,14 @@ class NodesController < ApplicationController
 
   def index
     @nodes = Node.all
+    respond_to do |format|
+      format.js do
+        ne = params[:ne].split(',').collect{|e|e.to_f}
+        sw = params[:sw].split(',').collect{|e|e.to_f}
+        @nodes = Node.find(:all, limit: 100, bounds: [sw, ne])
+      end
+      format.json { render json: @nodes}
+    end
 
   end
 

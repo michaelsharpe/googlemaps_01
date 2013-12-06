@@ -2,6 +2,7 @@
 var map;
 var mapCenter;
 var currentPositionMarker;
+var positionTimer;
 var markers = new Array();
 
 function initializeMap(){
@@ -17,39 +18,52 @@ function locError(error) {
 }
 
 function setCurrentPosition(position){
-	var lat = position.coords.latitude;
-	var lng = position.coords.longitude;
-	var currentPosition = new google.maps.LatLng(lat, lng);
-
 	currentPositionMarker = new google.maps.Marker({
 		map: map,
-		position: currentPosition,
-		title: "You are here."
-	})
-		map.panTo(currentPosition);
+		position: new google.maps.LatLng(
+      position.coords.latitude,
+      position.coords.longitude),
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10
+    },
+    animation: google.maps.Animation.DROP,
+    animation: google.maps.Animation.BOUNCE,
+	  title: "You are here."
+	});
+	map.panTo(new google.maps.LatLng(
+    position.coords.latitude,
+    position.coords.longitude));
 }
 
 function watchCurrentPosition(){
-	navigator.geolocation.watchPosition(
-		function (position) {
-			console.log("Updated!");
-			setMarkerPosition(currentPositionMarker, position);
-		});
+  var positionTimer = navigator.geolocation.watchPosition(watchSuccess, watchError, watchOptions)
+}
+
+function watchSuccess(position){
+  setMarkerPosition(currentPositionMarker, position);
+}
+
+function watchError(err){
+  console.warn('ERROR(' + err.code + '): ' + err.message);
+}
+
+var watchOptions = {
+  enableHighAccuracy: true
 }
 
 function setMarkerPosition(marker, position) {
-	var lat = position.coords.lat;
-	var lng = position.coords.lng;
+	var lat = position.coords.latitude;
+	var lng = position.coords.longitude;
 	var updatedPosition = new google.maps.LatLng(lat, lng);
-	console.log(updatedPosition);
+  console.log(updatedPosition)
 	marker.setPosition(updatedPosition);
+	// map.panTo(updatedPosition);
 }
 
 function mapController(position){
 	setCurrentPosition(position);
 	watchCurrentPosition();
-
-
 }
 
 function initMapProcedure(){
@@ -63,4 +77,26 @@ function initMapProcedure(){
 
 $(document).ready(function(){
   initMapProcedure();
+
+  $("#populate").on("click", function(){
+    var request = $.ajax("/nodes.json", { 
+      success: function(data) {
+        for (i = 0; i < data.length ; i++) {
+          var location = new google.maps.LatLng(data[i].latitude, data[i].longitude)
+          var marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            title: data[i].name,
+            animation: google.maps.Aqnimation.DROP
+          })
+          google.maps.event.addListener(marker, 'click', function(){
+            map.setZoom(18);
+            map.setCenter(marker.getPosition());
+          }); 
+        }
+      }
+    });
+  });
+
 });
+

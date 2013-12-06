@@ -11,7 +11,14 @@ def address()
   number = r.rand(100..400)
 end
 
+def location()
+	loc = Random.new.location(43.6541557, -79.4001237, 1000)
+end
 
-50.times do |num|
-  Node.create(name: Faker::Name.name, address: "#{address()} Glebeholme Blvd, Toronto" )
+
+500.times do |num|
+	location = location()
+  lat = location[0]
+  lng = location[1]
+  Node.create(name: Faker::Name.name, latitude: lat, longitude: lng)
 end
