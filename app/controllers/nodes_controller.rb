@@ -35,4 +35,8 @@ class NodesController < ApplicationController
 
   private
 
+  def node_params
+    params.permit(:node).permit(:name, :latitude, :longitude, :tag_list)
+  end
+
 end
