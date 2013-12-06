@@ -58,7 +58,7 @@ function setMarkerPosition(marker, position) {
 	var updatedPosition = new google.maps.LatLng(lat, lng);
   console.log(updatedPosition)
 	marker.setPosition(updatedPosition);
-	// map.panTo(updatedPosition);
+	map.panTo(updatedPosition);
 }
 
 function mapController(position){
