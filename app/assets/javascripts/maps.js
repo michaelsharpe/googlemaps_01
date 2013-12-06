@@ -50,7 +50,6 @@ function watchError(err){
 
 var watchOptions = {
   enableHighAccuracy: true,
-  timout = Infinity,
   maximumAge = 0
 }
 
@@ -58,7 +57,6 @@ function setMarkerPosition(marker, position) {
 	var lat = position.coords.latitude;
 	var lng = position.coords.longitude;
 	var updatedPosition = new google.maps.LatLng(lat, lng);
-  console.log(updatedPosition)
 	marker.setPosition(updatedPosition);
 	map.panTo(updatedPosition);
 }
@@ -89,7 +87,7 @@ $(document).ready(function(){
             position: location,
             map: map,
             title: data[i].name,
-            animation: google.maps.Aqnimation.DROP
+            animation: google.maps.Animation.DROP
           })
           google.maps.event.addListener(marker, 'click', function(){
             map.setZoom(18);
