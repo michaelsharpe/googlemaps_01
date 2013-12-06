@@ -15,16 +15,23 @@ class NodesController < ApplicationController
   end
 
   def show
+    @node = ode.find(params[:id])
   end
 
   def new
-
+    @node = Node.new(node_params)
   end
 
   def edit
   end
 
   def create
+    @node = Node.new(node_params)
+    if @node.save
+      redirect_to node_path(@node)
+    else
+      @node
+    end
   end
 
   def update
@@ -36,7 +43,7 @@ class NodesController < ApplicationController
   private
 
   def node_params
-    params.permit(:node).permit(:name, :latitude, :longitude, :tag_list)
+    params.require(:nodes).permit(:name, :latitude, :longitude, :address, :tag_list)
   end
 
 end

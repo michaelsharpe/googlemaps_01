@@ -12,7 +12,7 @@ def address()
 end
 
 def location()
-	loc = Random.new.location(43.6541557, -79.4001237, 1000)
+	loc = Random.new.location(43.6482552, -79.3884569, 1000)
 end
 
 

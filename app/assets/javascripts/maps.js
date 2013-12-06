@@ -49,7 +49,9 @@ function watchError(err){
 }
 
 var watchOptions = {
-  enableHighAccuracy: true
+  enableHighAccuracy: true,
+  timout = Infinity,
+  maximumAge = 0
 }
 
 function setMarkerPosition(marker, position) {
